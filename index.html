@@ -59,6 +59,17 @@
   .beat em,.discs2 .d b,.flow .st b,.steps span,.stat .n,.next .ns b,.plan .pt,.plan .pa,.twho b,.tagline{filter:drop-shadow(0 2px 7px rgba(0,0,0,.55))}
   /* readable small labels over bright video */
   .twho,.stat .l,.galcap,.discs2 .d span,.flow .st span,.next .ns span,.cmeta b,.cmeta a,.cmeta span{text-shadow:0 1px 3px rgba(0,0,0,.7),0 0 14px rgba(0,0,0,.5)}
+  /* text reveal — content rises in as each beat enters, staggered */
+  .beat .eyebrow,.beat h1,.beat h2,.beat p,.ar-hero,.tagline,.discs2,.flow,.proof,.plans,.next .ns,.cta,.cmeta{
+    transform:translateY(24px);transition:transform 1s cubic-bezier(.16,1,.3,1)}
+  .beat.in .eyebrow,.beat.in h1,.beat.in h2,.beat.in p,.beat.in .ar-hero,.beat.in .tagline,.beat.in .discs2,.beat.in .flow,.beat.in .proof,.beat.in .plans,.beat.in .next .ns,.beat.in .cta,.beat.in .cmeta{transform:translateY(0)}
+  .beat.in .eyebrow{transition-delay:.04s}
+  .beat.in h1,.beat.in h2,.beat.in .ar-hero{transition-delay:.13s}
+  .beat.in p,.beat.in .tagline,.beat.in .discs2,.beat.in .flow{transition-delay:.24s}
+  .beat.in .proof,.beat.in .plans,.beat.in .cta,.beat.in .cmeta{transition-delay:.32s}
+  .beat.in .next .ns:nth-child(1){transition-delay:.30s}
+  .beat.in .next .ns:nth-child(2){transition-delay:.40s}
+  .beat.in .next .ns:nth-child(3){transition-delay:.50s}
 
   .ar-hero{font-family:'Amiri',serif;font-size:clamp(120px,24vw,330px);line-height:.8;color:transparent;background:var(--sunset);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 70px rgba(255,159,206,.55))}
   .tagline{margin-top:8px;font-family:var(--display);font-style:italic;font-size:clamp(18px,2.4vw,26px);color:#f4eefb;text-shadow:0 2px 20px rgba(0,0,0,.8)}
@@ -207,7 +218,7 @@
   <section class="beat" data-at="0.18" data-w="0.06">
     <div class="cluster">
       <div class="eyebrow">Who we're for</div>
-      <h2 class="mid">For brands that are<br>more than a <em>logo</em>.</h2>
+      <h2 class="mid">You're more than a logo.<br>Your feed should <em>show it</em>.</h2>
       <p>Founders, med spas, boutiques, and local brands who want a feed that finally feels like them — not another template.</p>
     </div>
   </section>
@@ -223,7 +234,7 @@
   <section class="beat" data-at="0.43" data-w="0.075">
     <div class="cluster">
       <div class="eyebrow">What we make</div>
-      <h2 class="mid">Everything your feed needs —<br><em>handled</em>.</h2>
+      <h2 class="mid">Your whole feed.<br><em>One studio</em>.</h2>
       <div class="discs2">
         <div class="d"><b>Content Creation</b><span>Scroll-stopping posts &amp; reels</span></div>
         <div class="d"><b>Social Strategy</b><span>What to post, and when</span></div>
@@ -390,6 +401,8 @@ function frame(){
     b.el.style.opacity=op;
     b.el.style.transform=`translate3d(0,${(eased-b.at)*-46}px,0) scale(${1+(eased-b.at)*0.16})`;
     b.el.style.visibility=op<0.01?'hidden':'visible';
+    if(op>0.55){ if(!b.in){ b.el.classList.add('in'); b.in=true; } }
+    else if(op<0.3 && b.in){ b.el.classList.remove('in'); b.in=false; }
   }
   // sports-repack reels: play only while the proof section is in view
   const reelsOn = Math.abs(eased-0.685)<0.13;
